@@ -66,10 +66,23 @@ exports.handler = async (event) => {
 
     if (!tokenRes.ok) {
       const err = await tokenRes.text();
-      console.error('Token fetch failed:', err);
+      console.error('Token fetch failed — Status:', tokenRes.status, '— Body:', err);
+      console.error('BASE_URL used:', BASE_URL);
+      console.error('Consumer Key length:', MPESA_CONSUMER_KEY ? MPESA_CONSUMER_KEY.length : 'MISSING');
+      console.error('Consumer Secret length:', MPESA_CONSUMER_SECRET ? MPESA_CONSUMER_SECRET.length : 'MISSING');
       return {
         statusCode: 502,
-        body: JSON.stringify({ error: 'Failed to get M-Pesa access token', detail: err }),
+        body: JSON.stringify({
+          error: 'Failed to get M-Pesa access token',
+          detail: err,
+          status: tokenRes.status,
+          debug: {
+            baseUrl: BASE_URL,
+            keyLength: MPESA_CONSUMER_KEY ? MPESA_CONSUMER_KEY.length : 'MISSING',
+            secretLength: MPESA_CONSUMER_SECRET ? MPESA_CONSUMER_SECRET.length : 'MISSING',
+            shortcode: MPESA_SHORTCODE || 'MISSING',
+          }
+        }),
       };
     }
 
@@ -93,7 +106,7 @@ exports.handler = async (event) => {
     BusinessShortCode: MPESA_SHORTCODE,
     Password:          password,
     Timestamp:         timestamp,
-    TransactionType:   'CustomerBuyGoodsOnline',   // Use 'CustomerPayBillOnline' for Paybill
+    TransactionType:   'CustomerPayBillOnline',
     Amount:            Math.round(amount),
     PartyA:            phone,
     PartyB:            MPESA_SHORTCODE,
