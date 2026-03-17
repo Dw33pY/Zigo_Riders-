@@ -2038,7 +2038,10 @@
         if (res.ok && data.ResponseCode === '0') {
           showPaymentModal('success', cleanPhone);
         } else {
-          showPaymentModal('error', null, data.errorMessage || 'STK Push failed. Please try again.');
+          const errMsg = data.debug
+            ? `${data.error} (Status: ${data.status})\nKey: ${data.debug.keyLength} chars | Secret: ${data.debug.secretLength} chars | Shortcode: ${data.debug.shortcode}\n${data.detail}`
+            : (data.errorMessage || data.error || JSON.stringify(data));
+          showPaymentModal('error', null, errMsg);
         }
 
       } catch (err) {
@@ -2067,6 +2070,7 @@
       } else {
         icon.textContent    = '❌';
         title.textContent   = 'Payment Failed';
+        message.style.cssText = 'white-space:pre-wrap;font-size:12px;text-align:left;';
         message.textContent = errorMsg || 'Something went wrong. Please try again.';
       }
 
@@ -2121,7 +2125,7 @@
     }
 
     // ── PWA INSTALL – CROSS PLATFORM ──
-    const SITE_URL = 'https://dw33py.github.io/Zigo_Riders-/';
+    const SITE_URL = 'https://zigoriders.netlify.app';
     const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
     const isInStandaloneMode = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
     let deferredPrompt = null;
