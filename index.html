@@ -783,6 +783,147 @@
 
     .whatsapp-note span { color: #25d366; }
 
+    /* ── STEP BADGES ── */
+    .step-badge {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--yellow);
+      background: rgba(255,215,0,0.08);
+      border: 1px solid rgba(255,215,0,0.2);
+      border-radius: 6px;
+      padding: 6px 12px;
+      display: inline-block;
+      margin-bottom: 16px;
+    }
+
+    /* ── QUOTE BOX ── */
+    .quote-box {
+      background: linear-gradient(135deg, rgba(255,215,0,0.12), rgba(255,215,0,0.05));
+      border: 1px solid rgba(255,215,0,0.4);
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 20px;
+      animation: fadeInUp 0.4s ease;
+    }
+
+    .quote-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+
+    .quote-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: rgba(255,215,0,0.7);
+      margin-bottom: 4px;
+    }
+
+    .quote-amount {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 42px;
+      color: var(--yellow);
+      line-height: 1;
+    }
+
+    .quote-route {
+      font-size: 12px;
+      color: rgba(255,255,255,0.5);
+      margin-top: 4px;
+    }
+
+    .quote-badge {
+      background: var(--yellow);
+      color: var(--purple-dark);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 50px;
+      white-space: nowrap;
+    }
+
+    .quote-breakdown {
+      font-size: 12px;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.6;
+      border-top: 1px solid rgba(255,215,0,0.15);
+      padding-top: 10px;
+    }
+
+    /* ── ZONE WARN ── */
+    .zone-warn {
+      background: rgba(255,100,50,0.1);
+      border: 1px solid rgba(255,100,50,0.3);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 13px;
+      color: rgba(255,180,140,0.9);
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    /* ── MPESA BUTTON ── */
+    .pay-mpesa-btn {
+      width: 100%;
+      padding: 18px;
+      background: #00a651;
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 20px;
+      font-weight: 900;
+      letter-spacing: 1.5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 8px 24px rgba(0,166,81,0.35);
+      transition: all 0.25s;
+      position: relative;
+    }
+
+    .pay-mpesa-btn:disabled {
+      background: rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.35);
+      box-shadow: none;
+      cursor: not-allowed;
+    }
+
+    .pay-mpesa-btn:not(:disabled):active { transform: scale(0.98); }
+
+    .mpesa-logo {
+      width: 28px;
+      height: 28px;
+      background: #fff;
+      color: #00a651;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 900;
+      flex-shrink: 0;
+    }
+
+    .pay-mpesa-btn:disabled .mpesa-logo {
+      background: rgba(255,255,255,0.2);
+      color: rgba(255,255,255,0.4);
+    }
+
+    .pay-amount-tag {
+      font-size: 13px;
+      font-weight: 600;
+      opacity: 0.8;
+      margin-left: 4px;
+    }
+
+    .payment-btns { display: flex; flex-direction: column; gap: 0; }
+
     /* ── CONTACT ── */
     .contact-section {
       background: var(--purple-dark);
@@ -1009,7 +1150,7 @@
       <div class="logo-icon">🏍️</div>
       <span>ZIGO <em>RIDERS</em></span>
     </div>
-    <a class="nav-cta" href="#book">BOOK NOW</a>
+    <button class="nav-cta" onclick="scrollToSection('book')">BOOK NOW</button>
   </nav>
 
   <!-- HERO -->
@@ -1035,8 +1176,8 @@
     </p>
 
     <div class="hero-buttons">
-      <a class="btn-primary" href="#book">📦 Book a Delivery</a>
-      <a class="btn-secondary" href="#pricing">View Prices</a>
+      <button class="btn-primary" onclick="scrollToSection('book')">📦 Book a Delivery</button>
+      <button class="btn-secondary" onclick="scrollToSection('pricing')">View Prices</button>
     </div>
 
     <div class="hero-stats">
@@ -1224,36 +1365,60 @@
   <section class="booking-section" id="book">
     <div class="section-label">Book a Delivery</div>
     <h2 class="section-title">SEND YOUR<br>PARCEL NOW</h2>
-    <p class="section-desc">Fill in the details below and we'll connect you instantly via WhatsApp.</p>
+    <p class="section-desc">Enter your locations to get an instant quote, then pay securely via M-Pesa.</p>
 
     <div class="booking-card">
+
+      <!-- STEP 1: LOCATIONS -->
+      <div class="step-badge">STEP 1 — YOUR LOCATIONS</div>
       <div class="form-row">
         <div class="form-group">
           <label class="form-label">Pickup Location</label>
-          <input type="text" class="form-input" id="pickup" placeholder="e.g. CBD, Westlands" required>
+          <input type="text" class="form-input" id="pickup" placeholder="e.g. CBD, Westlands" oninput="tryAutoQuote()">
         </div>
         <div class="form-group">
           <label class="form-label">Drop-off Location</label>
-          <input type="text" class="form-input" id="dropoff" placeholder="e.g. Ngong, Kasarani" required>
+          <input type="text" class="form-input" id="dropoff" placeholder="e.g. Kasarani, Karen" oninput="tryAutoQuote()">
         </div>
       </div>
+
+      <!-- QUOTE RESULT BOX (hidden until zones matched) -->
+      <div class="quote-box" id="quoteBox" style="display:none">
+        <div class="quote-top">
+          <div>
+            <div class="quote-label">ESTIMATED FARE</div>
+            <div class="quote-amount" id="quoteAmount">KSH 0</div>
+            <div class="quote-route" id="quoteRoute"></div>
+          </div>
+          <div class="quote-badge" id="quoteBadge">⚡ Same Day</div>
+        </div>
+        <div class="quote-breakdown" id="quoteBreakdown"></div>
+      </div>
+
+      <!-- UNRECOGNISED ZONE WARNING -->
+      <div class="zone-warn" id="zoneWarn" style="display:none">
+        ⚠️ We couldn't auto-detect your zone. Fill in your details and we'll confirm the price via WhatsApp.
+      </div>
+
+      <!-- STEP 2: DETAILS -->
+      <div class="step-badge" style="margin-top:20px">STEP 2 — YOUR DETAILS</div>
 
       <div class="form-group">
         <label class="form-label">Package Type</label>
         <div class="select-wrapper">
-          <select class="form-select" id="packageType">
-            <option value="Standard Parcel">📦 Standard Parcel</option>
-            <option value="Documents">📄 Documents</option>
-            <option value="Small Package">🛍️ Small Package</option>
-            <option value="Business Order">🏢 Business Order</option>
-            <option value="Fragile / Bulky">🥚 Fragile / Bulky Item</option>
+          <select class="form-select" id="packageType" onchange="tryAutoQuote()">
+            <option value="standard">📦 Standard Parcel</option>
+            <option value="documents">📄 Documents</option>
+            <option value="small">🛍️ Small Package</option>
+            <option value="business">🏢 Business Order</option>
+            <option value="fragile">🥚 Fragile / Bulky Item</option>
           </select>
         </div>
       </div>
 
       <div class="form-group">
         <label class="form-label">Your Phone Number</label>
-        <input type="tel" class="form-input" id="customerPhone" placeholder="07xx xxx xxx" required>
+        <input type="tel" class="form-input" id="customerPhone" placeholder="07xx xxx xxx">
       </div>
 
       <div class="form-group">
@@ -1261,11 +1426,20 @@
         <input type="text" class="form-input" id="notes" placeholder="e.g. fragile, call on arrival...">
       </div>
 
-      <button class="submit-btn" onclick="sendToWhatsApp()">
-        <span>📲</span> BOOK VIA WHATSAPP
-      </button>
+      <!-- STEP 3: PAYMENT -->
+      <div class="step-badge" style="margin-top:20px">STEP 3 — CONFIRM & PAY</div>
 
-      <p class="whatsapp-note">Opens <span>WhatsApp</span> with your booking details pre-filled ✓</p>
+      <div class="payment-btns">
+        <button class="pay-mpesa-btn" id="mpesaBtn" onclick="payMpesa()" disabled>
+          <span class="mpesa-logo">M</span> PAY VIA M-PESA
+          <span class="pay-amount-tag" id="payAmountTag">— Get Quote First</span>
+        </button>
+        <button class="submit-btn" onclick="sendToWhatsApp()" style="margin-top:10px">
+          <span>📲</span> BOOK VIA WHATSAPP
+        </button>
+      </div>
+
+      <p class="whatsapp-note">M-Pesa opens your SIM Toolkit automatically · <span>WhatsApp</span> for manual booking</p>
     </div>
   </section>
 
@@ -1326,6 +1500,50 @@
     <button class="install-btn" id="installBtn">Install</button>
     <button class="install-close" id="installClose">✕</button>
   </div>
+
+  <!-- PAYMENT STATUS MODAL -->
+  <div class="pay-modal-overlay" id="payModal" onclick="closePayModal()">
+    <div class="pay-modal" onclick="event.stopPropagation()">
+      <div class="pay-modal-icon" id="payModalIcon">📲</div>
+      <div class="pay-modal-title" id="payModalTitle">Check Your Phone!</div>
+      <div class="pay-modal-msg" id="payModalMsg"></div>
+      <div class="pay-modal-btns">
+        <button class="pay-modal-resend" onclick="resendStk()">🔄 Resend Prompt</button>
+        <button class="pay-modal-close" onclick="closePayModal()">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .pay-loading { font-size: 16px; font-weight: 600; }
+    .pay-modal-overlay {
+      position: fixed; inset: 0; z-index: 3000;
+      background: rgba(0,0,0,0.75);
+      display: flex; align-items: center; justify-content: center;
+      padding: 24px;
+      opacity: 0; pointer-events: none; transition: opacity 0.35s;
+    }
+    .pay-modal-overlay.show { opacity: 1; pointer-events: all; }
+    .pay-modal {
+      background: var(--purple);
+      border: 1px solid rgba(255,215,0,0.3);
+      border-radius: 24px;
+      padding: 32px 24px;
+      width: 100%; max-width: 380px;
+      text-align: center;
+      transform: scale(0.9);
+      transition: transform 0.35s;
+    }
+    .pay-modal-overlay.show .pay-modal { transform: scale(1); }
+    .pay-modal-icon { font-size: 52px; margin-bottom: 12px; display: block; }
+    .pay-modal-title { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 2px; color: var(--yellow); margin-bottom: 12px; }
+    .pay-modal-msg { font-size: 14px; color: rgba(255,255,255,0.75); line-height: 1.7; margin-bottom: 24px; }
+    .pay-modal-btns { display: flex; flex-direction: column; gap: 10px; }
+    .pay-modal-resend { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 13px; border-radius: 12px; font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+    .pay-modal-resend:active { transform: scale(0.97); }
+    .pay-modal-close { background: var(--yellow); color: var(--purple-dark); border: none; padding: 14px; border-radius: 12px; font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 900; cursor: pointer; transition: all 0.2s; letter-spacing: 1px; }
+    .pay-modal-close:active { transform: scale(0.97); }
+  </style>
 
   <!-- TOAST -->
   <div class="toast" id="toast">✅ Opening WhatsApp...</div>
@@ -1413,48 +1631,289 @@
     }, { threshold: 0.1 });
     cards.forEach(el => cardObserver.observe(el));
 
+    // ════════════════════════════════════════
+    // ZONE ENGINE
+    // ════════════════════════════════════════
+
+    // Zone definitions — keywords that map to a zone ID
+    const ZONES = {
+      cbd:        ['cbd','city centre','city center','nairobi cbd','town','downtown','kenyatta avenue','moi avenue','river road','latema','kirinyaga road','haile selassie','station','ambassador','kencom','archives'],
+      westlands:  ['westlands','parklands','springvalley','spring valley','brookside','highridge','peponi','kitisuru','gigiri','runda','muthaiga','karura','ridgeways','loresho'],
+      eastlands:  ['eastlands','umoja','kayole','komarock','dandora','njiru','ruai','mihango','utawala','tena','embakasi','pipeline','south b','south c','south b/c','industrial area','industrial','athi river','mlolongo'],
+      southlands: ['southlands','langata','karen','ongata rongai','rongai','kiserian','ngong','lavington','dagoretti','kikuyu','kinoo','kabete','uthiru','waithaka','wangige','kawangware'],
+      northlands: ['northlands','kasarani','roysambu','ruiru','kahawa','kahawa west','githurai','zimmerman','lucky summer','mirema','mwiki','clay city','thika road','garden estate','highland','hunters','kenyatta road','juja','thika'],
+      kilimani:   ['kilimani','hurlingham','upper hill','yaya','valley arcade','dennis pritt','lenana','adams arcade','jamhuri','nyayo','olympic'],
+      airport:    ['jkia','airport','jomo kenyatta','syokimau','mlolongo','cabanas'],
+      thikard:    ['thika','juja','ruiru','githurai','kahawa','clay city'],
+    };
+
+    // Zone-to-zone pricing matrix (KSH)
+    // Format: [fromZone][toZone] = price
+    // Symmetric — same either direction
+    const PRICES = {
+      cbd: {
+        cbd: 100, westlands: 150, eastlands: 180, southlands: 250,
+        northlands: 220, kilimani: 150, airport: 300, thikard: 280,
+      },
+      westlands: {
+        cbd: 150, westlands: 100, eastlands: 250, southlands: 280,
+        northlands: 250, kilimani: 150, airport: 350, thikard: 320,
+      },
+      eastlands: {
+        cbd: 180, westlands: 250, eastlands: 100, southlands: 300,
+        northlands: 280, kilimani: 220, airport: 200, thikard: 300,
+      },
+      southlands: {
+        cbd: 250, westlands: 280, eastlands: 300, southlands: 100,
+        northlands: 340, kilimani: 200, airport: 280, thikard: 380,
+      },
+      northlands: {
+        cbd: 220, westlands: 250, eastlands: 280, southlands: 340,
+        northlands: 100, kilimani: 250, airport: 350, thikard: 150,
+      },
+      kilimani: {
+        cbd: 150, westlands: 150, eastlands: 220, southlands: 200,
+        northlands: 250, kilimani: 100, airport: 300, thikard: 300,
+      },
+      airport: {
+        cbd: 300, westlands: 350, eastlands: 200, southlands: 280,
+        northlands: 350, kilimani: 300, airport: 100, thikard: 350,
+      },
+      thikard: {
+        cbd: 280, westlands: 320, eastlands: 300, southlands: 380,
+        northlands: 150, kilimani: 300, airport: 350, thikard: 100,
+      },
+    };
+
+    // Package surcharges
+    const SURCHARGES = {
+      standard:  0,
+      documents: 0,
+      small:     20,
+      business:  50,
+      fragile:   80,
+    };
+
+    // Human-readable zone names
+    const ZONE_NAMES = {
+      cbd: 'CBD / City Centre',
+      westlands: 'Westlands / Parklands',
+      eastlands: 'Eastlands / Industrial',
+      southlands: 'Southlands / Karen / Rongai',
+      northlands: 'Northlands / Kasarani / Ruiru',
+      kilimani: 'Kilimani / Upper Hill',
+      airport: 'Airport / Syokimau',
+      thikard: 'Thika Road / Juja',
+    };
+
+    function detectZone(text) {
+      if (!text) return null;
+      const lower = text.toLowerCase().trim();
+      for (const [zone, keywords] of Object.entries(ZONES)) {
+        for (const kw of keywords) {
+          if (lower.includes(kw)) return zone;
+        }
+      }
+      return null;
+    }
+
+    let currentQuote = 0;
+
+    function tryAutoQuote() {
+      const pickup  = document.getElementById('pickup').value;
+      const dropoff = document.getElementById('dropoff').value;
+      const pkg     = document.getElementById('packageType').value;
+
+      const qBox    = document.getElementById('quoteBox');
+      const zWarn   = document.getElementById('zoneWarn');
+
+      if (!pickup.trim() || !dropoff.trim()) {
+        qBox.style.display  = 'none';
+        zWarn.style.display = 'none';
+        setMpesaBtn(0);
+        return;
+      }
+
+      const fromZone = detectZone(pickup);
+      const toZone   = detectZone(dropoff);
+
+      if (fromZone && toZone) {
+        const base      = PRICES[fromZone][toZone];
+        const surcharge = SURCHARGES[pkg] || 0;
+        const total     = base + surcharge;
+        currentQuote    = total;
+
+        // Show quote box
+        document.getElementById('quoteAmount').textContent   = 'KSH ' + total.toLocaleString();
+        document.getElementById('quoteRoute').textContent    = ZONE_NAMES[fromZone] + ' → ' + ZONE_NAMES[toZone];
+
+        let breakdown = `Base fare: KSH ${base.toLocaleString()}`;
+        if (surcharge > 0) breakdown += ` · Package surcharge: +KSH ${surcharge}`;
+        breakdown += ` · Estimated delivery: same day`;
+        document.getElementById('quoteBreakdown').textContent = breakdown;
+
+        qBox.style.display  = 'block';
+        zWarn.style.display = 'none';
+        setMpesaBtn(total);
+
+      } else {
+        // Zones not recognised
+        qBox.style.display  = 'none';
+        zWarn.style.display = 'block';
+        currentQuote = 0;
+        setMpesaBtn(0);
+      }
+    }
+
+    function setMpesaBtn(amount) {
+      const btn = document.getElementById('mpesaBtn');
+      const tag = document.getElementById('payAmountTag');
+      if (amount > 0) {
+        btn.disabled    = false;
+        tag.textContent = '· KSH ' + amount.toLocaleString();
+      } else {
+        btn.disabled    = true;
+        tag.textContent = '— Get Quote First';
+      }
+    }
+
+    // ── SMOOTH SCROLL HELPER (works in all environments) ──
+    function scrollToSection(id) {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // ── M-PESA DARAJA STK PUSH ──
+    async function payMpesa() {
+      const phone  = document.getElementById('customerPhone').value.trim();
+      const pickup = document.getElementById('pickup').value.trim();
+      const dropoff= document.getElementById('dropoff').value.trim();
+
+      if (!phone) {
+        document.getElementById('customerPhone').style.borderColor = '#ff4d4d';
+        setTimeout(() => document.getElementById('customerPhone').style.borderColor = '', 2000);
+        alert('Please enter your phone number first!');
+        return;
+      }
+      if (!pickup || !dropoff) {
+        alert('Please enter your pickup and drop-off locations to get a quote first!');
+        return;
+      }
+      if (currentQuote <= 0) {
+        alert('Could not calculate a quote. Please check your locations and try again.');
+        return;
+      }
+
+      // Normalise phone: strip leading 0, add 254
+      let cleanPhone = phone.replace(/\s+/g, '').replace(/^\+/, '');
+      if (cleanPhone.startsWith('0')) cleanPhone = '254' + cleanPhone.slice(1);
+      if (!cleanPhone.startsWith('254')) cleanPhone = '254' + cleanPhone;
+
+      // Show loading state
+      const btn = document.getElementById('mpesaBtn');
+      const originalHTML = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = `<span class="mpesa-logo">M</span> <span class="pay-loading">Sending STK Push…</span>`;
+
+      showPaymentModal('pending');
+
+      try {
+        const res = await fetch('/.netlify/functions/mpesa', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            phone:  cleanPhone,
+            amount: currentQuote,
+            pickup,
+            dropoff,
+          }),
+        });
+
+        const data = await res.json();
+
+        if (res.ok && data.ResponseCode === '0') {
+          showPaymentModal('success', cleanPhone);
+        } else {
+          showPaymentModal('error', null, data.errorMessage || 'STK Push failed. Please try again.');
+        }
+
+      } catch (err) {
+        showPaymentModal('error', null, 'Network error. Check your connection and try again.');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = originalHTML;
+      }
+    }
+
+    // ── PAYMENT STATUS MODAL ──
+    function showPaymentModal(state, phone, errorMsg) {
+      const modal   = document.getElementById('payModal');
+      const icon    = document.getElementById('payModalIcon');
+      const title   = document.getElementById('payModalTitle');
+      const message = document.getElementById('payModalMsg');
+
+      if (state === 'pending') {
+        icon.textContent    = '📲';
+        title.textContent   = 'Check Your Phone!';
+        message.innerHTML   = `An M-Pesa prompt is being sent to <strong>${document.getElementById('customerPhone').value}</strong>.<br><br>Enter your M-Pesa PIN to complete the payment of <strong>KSH ${currentQuote.toLocaleString()}</strong>.`;
+      } else if (state === 'success') {
+        icon.textContent    = '✅';
+        title.textContent   = 'STK Push Sent!';
+        message.innerHTML   = `The M-Pesa prompt has been sent to your phone.<br><br>Enter your PIN to complete payment of <strong>KSH ${currentQuote.toLocaleString()}</strong>.<br><br><small style="opacity:0.6">If you don't see the prompt within 30 seconds, tap "Resend".</small>`;
+      } else {
+        icon.textContent    = '❌';
+        title.textContent   = 'Payment Failed';
+        message.textContent = errorMsg || 'Something went wrong. Please try again.';
+      }
+
+      modal.classList.add('show');
+    }
+
+    function closePayModal() {
+      document.getElementById('payModal').classList.remove('show');
+    }
+
+    function resendStk() {
+      closePayModal();
+      payMpesa();
+    }
+
     // ── WHATSAPP BOOKING ──
     function sendToWhatsApp() {
-      const pickup = document.getElementById('pickup').value.trim();
-      const dropoff = document.getElementById('dropoff').value.trim();
+      const pickup      = document.getElementById('pickup').value.trim();
+      const dropoff     = document.getElementById('dropoff').value.trim();
       const packageType = document.getElementById('packageType').value;
       const customerPhone = document.getElementById('customerPhone').value.trim();
-      const notes = document.getElementById('notes').value.trim();
+      const notes       = document.getElementById('notes').value.trim();
 
       if (!pickup || !dropoff || !customerPhone) {
-        // Shake effect on empty fields
         ['pickup','dropoff','customerPhone'].forEach(id => {
           const el = document.getElementById(id);
           if (!el.value.trim()) {
             el.style.borderColor = '#ff4d4d';
-            el.style.animation = 'none';
             setTimeout(() => el.style.borderColor = '', 2000);
           }
         });
-        alert("Please fill in pickup, drop-off, and your phone number!");
+        alert('Please fill in pickup, drop-off, and your phone number!');
         return;
       }
 
-      const businessNumber = "254769089172";
-      let message = `*🏍️ NEW ZIGO RIDERS BOOKING!*\n\n`;
+      const businessNumber = '254769089172';
+      let message = `*🏍️ NEW ZIGO RIDERS BOOKING!*\n`;
+      message += `━━━━━━━━━━━━━━━━━\n`;
       message += `📍 *Pickup:* ${pickup}\n`;
       message += `🏁 *Drop-off:* ${dropoff}\n`;
       message += `📦 *Package:* ${packageType}\n`;
-      message += `📱 *My Number:* ${customerPhone}`;
-      if (notes) message += `\n📝 *Notes:* ${notes}`;
-      message += `\n\nPlease confirm my delivery! 🙏`;
+      message += `📱 *My Number:* ${customerPhone}\n`;
+      if (currentQuote > 0) message += `💰 *Quoted Fare:* KSH ${currentQuote.toLocaleString()}\n`;
+      if (notes) message += `📝 *Notes:* ${notes}\n`;
+      message += `━━━━━━━━━━━━━━━━━\nPlease confirm my delivery! 🙏`;
 
-      const encodedMessage = encodeURIComponent(message);
-      const whatsappURL = `https://wa.me/${businessNumber}?text=${encodedMessage}`;
-
-      showToast();
-      setTimeout(() => window.open(whatsappURL, '_blank'), 600);
-    }
-
-    function showToast() {
-      const toast = document.getElementById('toast');
-      toast.classList.add('show');
-      setTimeout(() => toast.classList.remove('show'), 3000);
+      const whatsappURL = `https://wa.me/${businessNumber}?text=${encodeURIComponent(message)}`;
+      const t = document.getElementById('toast');
+      t.textContent = '✅ Opening WhatsApp...';
+      t.classList.add('show');
+      setTimeout(() => { t.classList.remove('show'); window.open(whatsappURL, '_blank'); }, 600);
     }
 
     // ── PWA INSTALL – CROSS PLATFORM ──
