@@ -1330,6 +1330,34 @@
   <!-- TOAST -->
   <div class="toast" id="toast">✅ Opening WhatsApp...</div>
 
+  <!-- iOS INSTALL GUIDE -->
+  <div class="ios-overlay" id="iosGuide" onclick="closeIOSGuide()">
+    <div class="ios-modal" onclick="event.stopPropagation()">
+      <div class="ios-handle"></div>
+      <div class="ios-title">📲 Add to Home Screen</div>
+      <p class="ios-sub">Follow these steps to install Zigo Riders on your iPhone or iPad:</p>
+      <div class="ios-step"><div class="ios-step-num">1</div><div class="ios-step-text">Tap the <strong>Share</strong> button at the bottom of Safari ⬆️</div></div>
+      <div class="ios-step"><div class="ios-step-num">2</div><div class="ios-step-text">Scroll down and tap <strong>"Add to Home Screen"</strong> ➕</div></div>
+      <div class="ios-step"><div class="ios-step-num">3</div><div class="ios-step-text">Tap <strong>"Add"</strong> in the top-right corner and you're done! 🎉</div></div>
+      <button class="ios-close-btn" onclick="closeIOSGuide()">Got it ✓</button>
+    </div>
+  </div>
+
+  <style>
+    .ios-overlay { position:fixed; inset:0; z-index:2000; background:rgba(0,0,0,0.7); display:flex; align-items:flex-end; opacity:0; pointer-events:none; transition:opacity 0.35s; }
+    .ios-overlay.show { opacity:1; pointer-events:all; }
+    .ios-modal { background:var(--purple); border-radius:28px 28px 0 0; padding:8px 24px 44px; width:100%; border-top:2px solid var(--yellow); transform:translateY(30px); transition:transform 0.35s; }
+    .ios-overlay.show .ios-modal { transform:translateY(0); }
+    .ios-handle { width:40px; height:4px; background:rgba(255,255,255,0.2); border-radius:2px; margin:14px auto 20px; }
+    .ios-title { font-family:'Bebas Neue',sans-serif; font-size:28px; letter-spacing:2px; color:var(--yellow); margin-bottom:8px; }
+    .ios-sub { font-size:13px; color:rgba(255,255,255,0.6); margin-bottom:24px; line-height:1.5; }
+    .ios-step { display:flex; align-items:flex-start; gap:14px; margin-bottom:18px; }
+    .ios-step-num { width:32px; height:32px; background:var(--yellow); color:var(--purple-dark); border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Bebas Neue',sans-serif; font-size:18px; flex-shrink:0; }
+    .ios-step-text { font-size:14px; color:rgba(255,255,255,0.85); line-height:1.5; padding-top:6px; }
+    .ios-close-btn { width:100%; margin-top:8px; background:var(--yellow); color:var(--purple-dark); border:none; padding:16px; border-radius:12px; font-family:'Barlow Condensed',sans-serif; font-size:18px; font-weight:900; cursor:pointer; letter-spacing:1px; }
+    .ios-close-btn:active { transform:scale(0.98); }
+  </style>
+
   <script>
     // ── NAV SCROLL ──
     const navbar = document.getElementById('navbar');
@@ -1429,28 +1457,63 @@
       setTimeout(() => toast.classList.remove('show'), 3000);
     }
 
-    // ── PWA INSTALL PROMPT ──
-    let deferredPrompt;
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-      setTimeout(() => {
-        document.getElementById('installBanner').classList.add('show');
-      }, 3000);
-    });
+    // ── PWA INSTALL – CROSS PLATFORM ──
+    const SITE_URL = 'https://dw33py.github.io/Zigo_Riders-/';
+    const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+    const isInStandaloneMode = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+    let deferredPrompt = null;
 
-    document.getElementById('installBtn').addEventListener('click', async () => {
-      if (deferredPrompt) {
-        deferredPrompt.prompt();
-        const { outcome } = await deferredPrompt.userChoice;
-        deferredPrompt = null;
-        document.getElementById('installBanner').classList.remove('show');
+    // Don't show if already installed
+    if (!isInStandaloneMode) {
+
+      // iOS: show a "how to install" guide after 4s
+      if (isIOS) {
+        setTimeout(() => {
+          document.getElementById('installBanner').classList.add('show');
+          document.getElementById('installBtn').textContent = '📖 How to Install';
+          document.querySelector('.install-text strong').textContent = 'Save to Home Screen';
+          document.querySelector('.install-text').childNodes[2].textContent = ' Tap Share → "Add to Home Screen"';
+        }, 4000);
+
+        document.getElementById('installBtn').addEventListener('click', () => {
+          showIOSGuide();
+        });
+
+      } else {
+        // Android / Chrome: use native prompt
+        window.addEventListener('beforeinstallprompt', (e) => {
+          e.preventDefault();
+          deferredPrompt = e;
+          setTimeout(() => {
+            document.getElementById('installBanner').classList.add('show');
+          }, 3000);
+        });
+
+        document.getElementById('installBtn').addEventListener('click', async () => {
+          if (deferredPrompt) {
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            deferredPrompt = null;
+            document.getElementById('installBanner').classList.remove('show');
+          } else {
+            // Fallback: open the live site
+            window.open(SITE_URL, '_blank');
+          }
+        });
       }
-    });
 
-    document.getElementById('installClose').addEventListener('click', () => {
-      document.getElementById('installBanner').classList.remove('show');
-    });
+      document.getElementById('installClose').addEventListener('click', () => {
+        document.getElementById('installBanner').classList.remove('show');
+      });
+    }
+
+    // iOS install guide modal
+    function showIOSGuide() {
+      document.getElementById('iosGuide').classList.add('show');
+    }
+    function closeIOSGuide() {
+      document.getElementById('iosGuide').classList.remove('show');
+    }
   </script>
 </body>
 </html>
