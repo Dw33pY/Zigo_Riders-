@@ -1,0 +1,1456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>Zigo Riders – Fast Delivery You Can Trust</title>
+  <meta name="theme-color" content="#3b185f">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Zigo Riders">
+  <link rel="manifest" href="manifest.json">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;600;700;900&family=Barlow+Condensed:wght@700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --purple: #3b185f;
+      --purple-dark: #250f3e;
+      --purple-mid: #4e2075;
+      --yellow: #ffd700;
+      --yellow-light: #ffe44d;
+      --yellow-dark: #e6b800;
+      --white: #ffffff;
+      --gray: #f0ece8;
+      --text-dark: #1a0a2e;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Barlow', sans-serif;
+      background: var(--purple-dark);
+      color: var(--white);
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.4;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(37, 15, 62, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255, 215, 0, 0.15);
+      transition: all 0.3s;
+    }
+
+    nav.scrolled {
+      padding: 10px 20px;
+      background: rgba(37, 15, 62, 0.97);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-logo .logo-icon {
+      width: 40px;
+      height: 40px;
+      background: var(--yellow);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    .nav-logo span {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 24px;
+      letter-spacing: 2px;
+      color: var(--white);
+    }
+
+    .nav-logo span em {
+      color: var(--yellow);
+      font-style: normal;
+    }
+
+    .nav-cta {
+      background: var(--yellow);
+      color: var(--purple-dark);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 1px;
+      padding: 9px 18px;
+      border-radius: 50px;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .nav-cta:active { transform: scale(0.96); background: var(--yellow-dark); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 100px 20px 60px;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 30%, rgba(255,215,0,0.12) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 80% at 80% 80%, rgba(78,32,117,0.6) 0%, transparent 70%),
+        linear-gradient(160deg, #250f3e 0%, #3b185f 50%, #1a0a2e 100%);
+      z-index: 0;
+    }
+
+    /* Animated speed lines */
+    .speed-lines {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .speed-line {
+      position: absolute;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(255,215,0,0.3), transparent);
+      animation: speedLine 2.5s ease-in-out infinite;
+      opacity: 0;
+    }
+
+    @keyframes speedLine {
+      0% { transform: translateX(-100%); opacity: 0; }
+      30% { opacity: 1; }
+      70% { opacity: 1; }
+      100% { transform: translateX(100vw); opacity: 0; }
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,215,0,0.15);
+      border: 1px solid rgba(255,215,0,0.4);
+      border-radius: 50px;
+      padding: 7px 16px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--yellow);
+      margin-bottom: 24px;
+      position: relative;
+      z-index: 1;
+      animation: fadeInUp 0.8s ease both;
+    }
+
+    .badge-dot {
+      width: 8px; height: 8px;
+      background: var(--yellow);
+      border-radius: 50%;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.5); opacity: 0.5; }
+    }
+
+    .hero h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(64px, 18vw, 120px);
+      line-height: 0.9;
+      letter-spacing: 4px;
+      position: relative;
+      z-index: 1;
+      animation: fadeInUp 0.8s 0.15s ease both;
+    }
+
+    .hero h1 .line-white { color: var(--white); display: block; }
+    .hero h1 .line-yellow {
+      color: var(--yellow);
+      display: block;
+      -webkit-text-stroke: 2px var(--yellow-dark);
+    }
+
+    .hero-sub {
+      font-size: clamp(15px, 4vw, 19px);
+      font-weight: 400;
+      color: rgba(255,255,255,0.75);
+      margin-top: 16px;
+      max-width: 380px;
+      line-height: 1.5;
+      position: relative;
+      z-index: 1;
+      animation: fadeInUp 0.8s 0.3s ease both;
+    }
+
+    .hero-sub strong { color: var(--yellow); font-weight: 700; }
+
+    .hero-buttons {
+      display: flex;
+      gap: 12px;
+      margin-top: 36px;
+      flex-wrap: wrap;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+      animation: fadeInUp 0.8s 0.45s ease both;
+    }
+
+    .btn-primary {
+      background: var(--yellow);
+      color: var(--purple-dark);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 17px;
+      font-weight: 900;
+      letter-spacing: 1.5px;
+      padding: 16px 32px;
+      border-radius: 50px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.25s;
+      box-shadow: 0 8px 30px rgba(255,215,0,0.4);
+    }
+
+    .btn-primary:active { transform: scale(0.96); }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--white);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      padding: 16px 32px;
+      border-radius: 50px;
+      border: 2px solid rgba(255,255,255,0.3);
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.25s;
+    }
+
+    .btn-secondary:active { border-color: var(--yellow); color: var(--yellow); }
+
+    /* Floating stats */
+    .hero-stats {
+      display: flex;
+      gap: 24px;
+      margin-top: 48px;
+      position: relative;
+      z-index: 1;
+      animation: fadeInUp 0.8s 0.6s ease both;
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 36px;
+      color: var(--yellow);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      color: rgba(255,255,255,0.5);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+
+    .stat-divider {
+      width: 1px;
+      background: rgba(255,255,255,0.15);
+      align-self: stretch;
+    }
+
+    /* scroll indicator */
+    .scroll-hint {
+      position: absolute;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      opacity: 0.5;
+      z-index: 1;
+      animation: bounce 2s infinite;
+    }
+
+    .scroll-hint span {
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(6px); }
+    }
+
+    /* ── MARQUEE ── */
+    .marquee-bar {
+      background: var(--yellow);
+      color: var(--purple-dark);
+      padding: 12px 0;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .marquee-track {
+      display: flex;
+      gap: 0;
+      animation: marquee 20s linear infinite;
+      white-space: nowrap;
+    }
+
+    .marquee-item {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 15px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 0 24px;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .marquee-dot { color: var(--purple); font-size: 20px; }
+
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ── SECTION BASE ── */
+    section {
+      padding: 80px 20px;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--yellow);
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(38px, 10vw, 64px);
+      line-height: 0.95;
+      letter-spacing: 2px;
+      margin-bottom: 16px;
+    }
+
+    .section-desc {
+      color: rgba(255,255,255,0.65);
+      font-size: 15px;
+      line-height: 1.7;
+      max-width: 480px;
+    }
+
+    /* ── WHY US ── */
+    .why-section {
+      background: linear-gradient(180deg, var(--purple-dark) 0%, var(--purple) 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .why-section::before {
+      content: '';
+      position: absolute;
+      top: -100px; right: -100px;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(255,215,0,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 40px;
+    }
+
+    .feature-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,215,0,0.15);
+      border-radius: 16px;
+      padding: 22px 18px;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--yellow), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .feature-card.active::before,
+    .feature-card:focus::before { opacity: 1; }
+
+    .feature-card.in-view {
+      animation: cardReveal 0.5s ease both;
+    }
+
+    @keyframes cardReveal {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .feature-icon {
+      font-size: 28px;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .feature-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 17px;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+      color: var(--white);
+      margin-bottom: 6px;
+    }
+
+    .feature-desc {
+      font-size: 12px;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.5;
+    }
+
+    /* ── SERVICES / WE DELIVER ── */
+    .services-section {
+      background: var(--purple-dark);
+    }
+
+    .services-scroll {
+      display: flex;
+      gap: 14px;
+      overflow-x: auto;
+      padding-bottom: 16px;
+      margin-top: 36px;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      scroll-snap-type: x mandatory;
+    }
+
+    .services-scroll::-webkit-scrollbar { display: none; }
+
+    .service-card {
+      min-width: 200px;
+      background: linear-gradient(135deg, rgba(255,215,0,0.1), rgba(78,32,117,0.3));
+      border: 1px solid rgba(255,215,0,0.2);
+      border-radius: 20px;
+      padding: 28px 20px;
+      text-align: center;
+      scroll-snap-align: start;
+      flex-shrink: 0;
+      transition: transform 0.3s;
+    }
+
+    .service-card:active { transform: scale(0.97); }
+
+    .service-emoji { font-size: 38px; margin-bottom: 12px; display: block; }
+
+    .service-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 18px;
+      letter-spacing: 1px;
+      color: var(--yellow);
+      margin-bottom: 6px;
+    }
+
+    .service-desc {
+      font-size: 12px;
+      color: rgba(255,255,255,0.55);
+    }
+
+    /* ── PRICING ── */
+    .pricing-section {
+      background: linear-gradient(180deg, var(--purple-dark) 0%, #1a0a2e 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .pricing-section::after {
+      content: 'KSH';
+      position: absolute;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 200px;
+      color: rgba(255,215,0,0.03);
+      right: -20px;
+      bottom: -20px;
+      pointer-events: none;
+      letter-spacing: 10px;
+    }
+
+    .pricing-grid {
+      display: grid;
+      gap: 14px;
+      margin-top: 36px;
+    }
+
+    .price-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      padding: 22px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      transition: all 0.3s;
+    }
+
+    .price-card.featured {
+      background: linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,215,0,0.05));
+      border-color: rgba(255,215,0,0.4);
+    }
+
+    .price-info { flex: 1; }
+
+    .price-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 20px;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+
+    .price-note {
+      font-size: 12px;
+      color: rgba(255,255,255,0.5);
+    }
+
+    .price-amount {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 36px;
+      color: var(--yellow);
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .price-amount small {
+      font-family: 'Barlow', sans-serif;
+      font-size: 13px;
+      color: rgba(255,215,0,0.7);
+      font-weight: 400;
+    }
+
+    .pricing-note {
+      margin-top: 20px;
+      background: rgba(255,215,0,0.08);
+      border-left: 3px solid var(--yellow);
+      border-radius: 0 10px 10px 0;
+      padding: 14px 16px;
+      font-size: 13px;
+      color: rgba(255,255,255,0.7);
+      line-height: 1.6;
+    }
+
+    /* ── HOW IT WORKS ── */
+    .how-section {
+      background: var(--purple);
+    }
+
+    .steps-list {
+      margin-top: 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .step-item {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      padding-bottom: 32px;
+      position: relative;
+    }
+
+    .step-item:not(:last-child)::before {
+      content: '';
+      position: absolute;
+      left: 21px;
+      top: 44px;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(180deg, var(--yellow), transparent);
+    }
+
+    .step-num {
+      width: 44px;
+      height: 44px;
+      background: var(--yellow);
+      color: var(--purple-dark);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .step-content { padding-top: 8px; }
+
+    .step-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 20px;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+    }
+
+    .step-desc {
+      font-size: 13px;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.6;
+    }
+
+    /* ── BOOKING FORM ── */
+    .booking-section {
+      background: linear-gradient(135deg, #1a0a2e 0%, var(--purple) 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .booking-section::before {
+      content: '';
+      position: absolute;
+      top: -150px; left: -100px;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(255,215,0,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .booking-card {
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,215,0,0.2);
+      border-radius: 24px;
+      padding: 32px 24px;
+      margin-top: 36px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .form-group { margin-bottom: 20px; }
+
+    .form-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--yellow);
+      margin-bottom: 8px;
+    }
+
+    .form-input, .form-select {
+      width: 100%;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 12px;
+      padding: 14px 16px;
+      color: var(--white);
+      font-family: 'Barlow', sans-serif;
+      font-size: 15px;
+      transition: all 0.3s;
+      -webkit-appearance: none;
+      appearance: none;
+      outline: none;
+    }
+
+    .form-input:focus, .form-select:focus {
+      border-color: var(--yellow);
+      background: rgba(255,215,0,0.08);
+      box-shadow: 0 0 0 3px rgba(255,215,0,0.1);
+    }
+
+    .form-input::placeholder { color: rgba(255,255,255,0.3); }
+
+    .form-select option { background: var(--purple-dark); color: var(--white); }
+
+    .select-wrapper {
+      position: relative;
+    }
+
+    .select-wrapper::after {
+      content: '▾';
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--yellow);
+      pointer-events: none;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .submit-btn {
+      width: 100%;
+      background: var(--yellow);
+      color: var(--purple-dark);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 20px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      padding: 18px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      margin-top: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: all 0.25s;
+      box-shadow: 0 8px 24px rgba(255,215,0,0.35);
+    }
+
+    .submit-btn:active { transform: scale(0.98); background: var(--yellow-dark); }
+
+    .whatsapp-note {
+      text-align: center;
+      font-size: 12px;
+      color: rgba(255,255,255,0.4);
+      margin-top: 14px;
+    }
+
+    .whatsapp-note span { color: #25d366; }
+
+    /* ── CONTACT ── */
+    .contact-section {
+      background: var(--purple-dark);
+    }
+
+    .contact-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-top: 36px;
+    }
+
+    .contact-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      text-decoration: none;
+      color: var(--white);
+      transition: all 0.25s;
+    }
+
+    .contact-card:active {
+      border-color: var(--yellow);
+      background: rgba(255,215,0,0.08);
+    }
+
+    .contact-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+
+    .icon-phone { background: rgba(37,211,102,0.15); }
+    .icon-phone2 { background: rgba(255,215,0,0.15); }
+    .icon-ig { background: rgba(228,64,95,0.15); }
+    .icon-tiktok { background: rgba(105,201,208,0.15); }
+
+    .contact-info-text { font-size: 11px; color: rgba(255,255,255,0.4); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 3px; }
+    .contact-value { font-family: 'Barlow Condensed', sans-serif; font-size: 19px; font-weight: 700; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #0d0520;
+      padding: 40px 20px 32px;
+      text-align: center;
+      border-top: 1px solid rgba(255,215,0,0.1);
+    }
+
+    .footer-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 36px;
+      letter-spacing: 4px;
+      margin-bottom: 8px;
+    }
+
+    .footer-logo em { color: var(--yellow); font-style: normal; }
+
+    .footer-tagline {
+      font-size: 13px;
+      color: rgba(255,255,255,0.4);
+      letter-spacing: 1px;
+      margin-bottom: 28px;
+    }
+
+    .footer-divider {
+      height: 1px;
+      background: rgba(255,255,255,0.07);
+      margin: 0 0 24px;
+    }
+
+    .footer-copy {
+      font-size: 12px;
+      color: rgba(255,255,255,0.25);
+    }
+
+    /* ── FLOATING WHATSAPP ── */
+    .fab-wa {
+      position: fixed;
+      bottom: 24px;
+      right: 20px;
+      width: 58px;
+      height: 58px;
+      background: #25d366;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      box-shadow: 0 6px 24px rgba(37,211,102,0.4);
+      z-index: 900;
+      text-decoration: none;
+      animation: fabPop 0.5s 1s ease both, fabPulse 3s 2s ease-in-out infinite;
+      transition: transform 0.2s;
+    }
+
+    .fab-wa:active { transform: scale(0.92); }
+
+    @keyframes fabPop {
+      from { transform: scale(0); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes fabPulse {
+      0%, 100% { box-shadow: 0 6px 24px rgba(37,211,102,0.4); }
+      50% { box-shadow: 0 6px 40px rgba(37,211,102,0.7); }
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── INSTALL BANNER ── */
+    .install-banner {
+      display: none;
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: var(--purple);
+      border-top: 2px solid var(--yellow);
+      padding: 16px 20px;
+      z-index: 800;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .install-banner.show { display: flex; }
+
+    .install-text { flex: 1; font-size: 13px; }
+    .install-text strong { color: var(--yellow); display: block; font-size: 15px; }
+
+    .install-btn {
+      background: var(--yellow);
+      color: var(--purple-dark);
+      font-weight: 900;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 15px;
+      padding: 10px 20px;
+      border-radius: 50px;
+      border: none;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .install-close {
+      background: none;
+      border: none;
+      color: rgba(255,255,255,0.5);
+      font-size: 20px;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    /* ── SUCCESS TOAST ── */
+    .toast {
+      position: fixed;
+      top: 80px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-20px);
+      background: #1a2e1a;
+      border: 1px solid #25d366;
+      color: #25d366;
+      padding: 14px 24px;
+      border-radius: 50px;
+      font-size: 14px;
+      font-weight: 600;
+      z-index: 2000;
+      opacity: 0;
+      transition: all 0.4s;
+      white-space: nowrap;
+      pointer-events: none;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* ── PARALLAX HERO ELEMENTS ── */
+    .parallax-circle {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .pc1 {
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(255,215,0,0.08), transparent);
+      top: 10%; left: -100px;
+    }
+
+    .pc2 {
+      width: 200px; height: 200px;
+      background: radial-gradient(circle, rgba(255,255,255,0.04), transparent);
+      bottom: 20%; right: -50px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="navbar">
+    <div class="nav-logo">
+      <div class="logo-icon">🏍️</div>
+      <span>ZIGO <em>RIDERS</em></span>
+    </div>
+    <a class="nav-cta" href="#book">BOOK NOW</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="hero-bg"></div>
+    <div class="parallax-circle pc1" id="pc1"></div>
+    <div class="parallax-circle pc2" id="pc2"></div>
+    <div class="speed-lines" id="speedLines"></div>
+
+    <div class="hero-badge">
+      <div class="badge-dot"></div>
+      Now delivering across Nairobi
+    </div>
+
+    <h1>
+      <span class="line-white">FAST</span>
+      <span class="line-yellow">DELIVERY</span>
+    </h1>
+
+    <p class="hero-sub">
+      Need to send a parcel quickly and safely?<br>
+      Let <strong>Zigo Riders</strong> handle it for you!
+    </p>
+
+    <div class="hero-buttons">
+      <a class="btn-primary" href="#book">📦 Book a Delivery</a>
+      <a class="btn-secondary" href="#pricing">View Prices</a>
+    </div>
+
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-num">100<small style="font-size:18px">/=</small></div>
+        <div class="stat-label">From KSH</div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <div class="stat-num">24/7</div>
+        <div class="stat-label">Service</div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <div class="stat-num">NBI</div>
+        <div class="stat-label">Nairobi</div>
+      </div>
+    </div>
+
+    <div class="scroll-hint">
+      <span>Scroll</span>
+      <svg width="16" height="24" viewBox="0 0 16 24" fill="none">
+        <path d="M8 0v20M2 14l6 6 6-6" stroke="rgba(255,255,255,0.5)" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee-bar">
+    <div class="marquee-track" id="marqueeTrack">
+      <span class="marquee-item">Same Day Delivery <span class="marquee-dot">●</span></span>
+      <span class="marquee-item">Door-to-Door Service <span class="marquee-dot">●</span></span>
+      <span class="marquee-item">Affordable Charges <span class="marquee-dot">●</span></span>
+      <span class="marquee-item">Safe & Reliable <span class="marquee-dot">●</span></span>
+      <span class="marquee-item">Nairobi Wide <span class="marquee-dot">●</span></span>
+      <span class="marquee-item">Fast Delivery You Can Trust <span class="marquee-dot">●</span></span>
+      <!-- Duplicated for seamless loop -->
+      <span class="marquee-item">Same Day Delivery <span class="marquee-dot">●</span></span>
+      <span class="marquee-item">Door-to-Door Service <span class="marquee-dot">●</span></span>
+      <span class="marquee-item">Affordable Charges <span class="marquee-dot">●</span></span>
+      <span class="marquee-item">Safe & Reliable <span class="marquee-dot">●</span></span>
+      <span class="marquee-item">Nairobi Wide <span class="marquee-dot">●</span></span>
+      <span class="marquee-item">Fast Delivery You Can Trust <span class="marquee-dot">●</span></span>
+    </div>
+  </div>
+
+  <!-- WHY US -->
+  <section class="why-section" id="about">
+    <div class="section-label">Why Choose Us</div>
+    <h2 class="section-title">WE RIDE<br>SO YOU<br>DON'T HAVE TO</h2>
+    <p class="section-desc">Trusted by hundreds of customers across Nairobi for fast, safe parcel delivery every single day.</p>
+
+    <div class="features-grid">
+      <div class="feature-card reveal">
+        <span class="feature-icon">⚡</span>
+        <div class="feature-title">Same Day Delivery</div>
+        <div class="feature-desc">Your parcel delivered the same day you book. No waiting, no delays.</div>
+      </div>
+      <div class="feature-card reveal">
+        <span class="feature-icon">💰</span>
+        <div class="feature-title">Affordable Prices</div>
+        <div class="feature-desc">Starting from just KSH 100. Fair prices with no hidden charges.</div>
+      </div>
+      <div class="feature-card reveal">
+        <span class="feature-icon">🚪</span>
+        <div class="feature-title">Door-to-Door</div>
+        <div class="feature-desc">We collect from your door and deliver right to the recipient.</div>
+      </div>
+      <div class="feature-card reveal">
+        <span class="feature-icon">🛡️</span>
+        <div class="feature-title">Safe & Reliable</div>
+        <div class="feature-desc">Your items handled with care. We treat every parcel like our own.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="services-section" id="services">
+    <div class="section-label">What We Deliver</div>
+    <h2 class="section-title">WE HANDLE<br>IT ALL</h2>
+    <p class="section-desc">From small envelopes to business orders — if it fits on a bike, we'll get it there.</p>
+
+    <div class="services-scroll">
+      <div class="service-card">
+        <span class="service-emoji">📦</span>
+        <div class="service-name">Parcels</div>
+        <div class="service-desc">Any size parcel delivered fast across Nairobi</div>
+      </div>
+      <div class="service-card">
+        <span class="service-emoji">📄</span>
+        <div class="service-name">Documents</div>
+        <div class="service-desc">Contracts, letters & legal papers handled securely</div>
+      </div>
+      <div class="service-card">
+        <span class="service-emoji">🛍️</span>
+        <div class="service-name">Packages</div>
+        <div class="service-desc">Small packages and shopping delivered to your door</div>
+      </div>
+      <div class="service-card">
+        <span class="service-emoji">🏢</span>
+        <div class="service-name">Business Orders</div>
+        <div class="service-desc">Bulk business deliveries handled professionally</div>
+      </div>
+      <div class="service-card">
+        <span class="service-emoji">🥚</span>
+        <div class="service-name">Fragile Items</div>
+        <div class="service-desc">Extra-careful handling for fragile & delicate goods</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="pricing-section" id="pricing">
+    <div class="section-label">Our Prices</div>
+    <h2 class="section-title reveal">FAIR &<br>TRANSPARENT</h2>
+    <p class="section-desc reveal">No hidden costs. What you see is what you pay.</p>
+
+    <div class="pricing-grid">
+      <div class="price-card featured reveal">
+        <div class="price-info">
+          <div class="price-name">Standard Parcel</div>
+          <div class="price-note">Agent pickup anywhere in Nairobi</div>
+        </div>
+        <div class="price-amount">100<small>/=</small></div>
+      </div>
+      <div class="price-card reveal">
+        <div class="price-info">
+          <div class="price-name">Agents Delivery</div>
+          <div class="price-note">Drop-off at agent point</div>
+        </div>
+        <div class="price-amount">140<small>/=</small></div>
+      </div>
+      <div class="price-card reveal">
+        <div class="price-info">
+          <div class="price-name">Doorstep Delivery</div>
+          <div class="price-note">Within Nairobi — varies by distance</div>
+        </div>
+        <div class="price-amount"><small style="font-size:18px">from </small>100–340<small>/=</small></div>
+      </div>
+      <div class="price-card reveal">
+        <div class="price-info">
+          <div class="price-name">Fragile & Bulky</div>
+          <div class="price-note">Flexible pricing based on item size</div>
+        </div>
+        <div class="price-amount" style="font-size:22px">Flexible</div>
+      </div>
+    </div>
+
+    <div class="pricing-note reveal">
+      📍 <strong>Door-to-Door collection price is based on your location.</strong> Contact us to get an exact quote before booking.
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how-section">
+    <div class="section-label">How It Works</div>
+    <h2 class="section-title reveal">3 EASY<br>STEPS</h2>
+
+    <div class="steps-list">
+      <div class="step-item reveal">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <div class="step-title">Book Your Delivery</div>
+          <div class="step-desc">Fill in the form below or send us a WhatsApp message with your pickup and drop-off location.</div>
+        </div>
+      </div>
+      <div class="step-item reveal">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="step-title">We Confirm & Collect</div>
+          <div class="step-desc">A Zigo Rider confirms your booking and arrives promptly at your pickup point.</div>
+        </div>
+      </div>
+      <div class="step-item reveal">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <div class="step-title">Fast Delivery Done!</div>
+          <div class="step-desc">Your parcel is delivered safely. Same day. Every time.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BOOKING FORM -->
+  <section class="booking-section" id="book">
+    <div class="section-label">Book a Delivery</div>
+    <h2 class="section-title">SEND YOUR<br>PARCEL NOW</h2>
+    <p class="section-desc">Fill in the details below and we'll connect you instantly via WhatsApp.</p>
+
+    <div class="booking-card">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Pickup Location</label>
+          <input type="text" class="form-input" id="pickup" placeholder="e.g. CBD, Westlands" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Drop-off Location</label>
+          <input type="text" class="form-input" id="dropoff" placeholder="e.g. Ngong, Kasarani" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Package Type</label>
+        <div class="select-wrapper">
+          <select class="form-select" id="packageType">
+            <option value="Standard Parcel">📦 Standard Parcel</option>
+            <option value="Documents">📄 Documents</option>
+            <option value="Small Package">🛍️ Small Package</option>
+            <option value="Business Order">🏢 Business Order</option>
+            <option value="Fragile / Bulky">🥚 Fragile / Bulky Item</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Your Phone Number</label>
+        <input type="tel" class="form-input" id="customerPhone" placeholder="07xx xxx xxx" required>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Additional Notes (optional)</label>
+        <input type="text" class="form-input" id="notes" placeholder="e.g. fragile, call on arrival...">
+      </div>
+
+      <button class="submit-btn" onclick="sendToWhatsApp()">
+        <span>📲</span> BOOK VIA WHATSAPP
+      </button>
+
+      <p class="whatsapp-note">Opens <span>WhatsApp</span> with your booking details pre-filled ✓</p>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact-section" id="contact">
+    <div class="section-label">Get In Touch</div>
+    <h2 class="section-title reveal">REACH US<br>ANYTIME</h2>
+
+    <div class="contact-cards">
+      <a class="contact-card reveal" href="https://wa.me/254769089172">
+        <div class="contact-icon icon-phone">📱</div>
+        <div>
+          <div class="contact-info-text">WhatsApp / Call</div>
+          <div class="contact-value">0769 089 172</div>
+        </div>
+      </a>
+      <a class="contact-card reveal" href="tel:+254725495116">
+        <div class="contact-icon icon-phone2">📞</div>
+        <div>
+          <div class="contact-info-text">Call Us</div>
+          <div class="contact-value">0725 495 116</div>
+        </div>
+      </a>
+      <a class="contact-card reveal" href="https://instagram.com/zigodeliveryservices">
+        <div class="contact-icon icon-ig">📸</div>
+        <div>
+          <div class="contact-info-text">Instagram</div>
+          <div class="contact-value">@zigodeliveryservices</div>
+        </div>
+      </a>
+      <a class="contact-card reveal" href="https://tiktok.com/@zigodeliveryservices">
+        <div class="contact-icon icon-tiktok">🎵</div>
+        <div>
+          <div class="contact-info-text">TikTok</div>
+          <div class="contact-value">@Zigo delivery Services</div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">ZIGO <em>RIDERS</em></div>
+    <div class="footer-tagline">Fast Delivery You Can Trust</div>
+    <div class="footer-divider"></div>
+    <div class="footer-copy">© 2025 Zigo Riders · Nairobi, Kenya · All rights reserved</div>
+  </footer>
+
+  <!-- FLOATING WA BUTTON -->
+  <a class="fab-wa" href="https://wa.me/254769089172" target="_blank" title="Chat on WhatsApp">💬</a>
+
+  <!-- INSTALL BANNER -->
+  <div class="install-banner" id="installBanner">
+    <div class="install-text">
+      <strong>Add to Home Screen</strong>
+      Install Zigo Riders app for quick access
+    </div>
+    <button class="install-btn" id="installBtn">Install</button>
+    <button class="install-close" id="installClose">✕</button>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast">✅ Opening WhatsApp...</div>
+
+  <script>
+    // ── NAV SCROLL ──
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 60);
+    }, { passive: true });
+
+    // ── PARALLAX ──
+    const pc1 = document.getElementById('pc1');
+    const pc2 = document.getElementById('pc2');
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY;
+      if (pc1) pc1.style.transform = `translateY(${y * 0.25}px)`;
+      if (pc2) pc2.style.transform = `translateY(${y * -0.15}px)`;
+    }, { passive: true });
+
+    // ── SPEED LINES ──
+    const speedLinesContainer = document.getElementById('speedLines');
+    for (let i = 0; i < 8; i++) {
+      const line = document.createElement('div');
+      line.className = 'speed-line';
+      line.style.cssText = `
+        top: ${10 + Math.random() * 80}%;
+        width: ${80 + Math.random() * 200}px;
+        animation-delay: ${Math.random() * 4}s;
+        animation-duration: ${2 + Math.random() * 2}s;
+        opacity: 0;
+      `;
+      speedLinesContainer.appendChild(line);
+    }
+
+    // ── SCROLL REVEAL ──
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 80);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => observer.observe(el));
+
+    // Feature cards in-view animation
+    const cards = document.querySelectorAll('.feature-card');
+    const cardObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('in-view'), i * 100);
+          cardObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    cards.forEach(el => cardObserver.observe(el));
+
+    // ── WHATSAPP BOOKING ──
+    function sendToWhatsApp() {
+      const pickup = document.getElementById('pickup').value.trim();
+      const dropoff = document.getElementById('dropoff').value.trim();
+      const packageType = document.getElementById('packageType').value;
+      const customerPhone = document.getElementById('customerPhone').value.trim();
+      const notes = document.getElementById('notes').value.trim();
+
+      if (!pickup || !dropoff || !customerPhone) {
+        // Shake effect on empty fields
+        ['pickup','dropoff','customerPhone'].forEach(id => {
+          const el = document.getElementById(id);
+          if (!el.value.trim()) {
+            el.style.borderColor = '#ff4d4d';
+            el.style.animation = 'none';
+            setTimeout(() => el.style.borderColor = '', 2000);
+          }
+        });
+        alert("Please fill in pickup, drop-off, and your phone number!");
+        return;
+      }
+
+      const businessNumber = "254769089172";
+      let message = `*🏍️ NEW ZIGO RIDERS BOOKING!*\n\n`;
+      message += `📍 *Pickup:* ${pickup}\n`;
+      message += `🏁 *Drop-off:* ${dropoff}\n`;
+      message += `📦 *Package:* ${packageType}\n`;
+      message += `📱 *My Number:* ${customerPhone}`;
+      if (notes) message += `\n📝 *Notes:* ${notes}`;
+      message += `\n\nPlease confirm my delivery! 🙏`;
+
+      const encodedMessage = encodeURIComponent(message);
+      const whatsappURL = `https://wa.me/${businessNumber}?text=${encodedMessage}`;
+
+      showToast();
+      setTimeout(() => window.open(whatsappURL, '_blank'), 600);
+    }
+
+    function showToast() {
+      const toast = document.getElementById('toast');
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    // ── PWA INSTALL PROMPT ──
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      setTimeout(() => {
+        document.getElementById('installBanner').classList.add('show');
+      }, 3000);
+    });
+
+    document.getElementById('installBtn').addEventListener('click', async () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        deferredPrompt = null;
+        document.getElementById('installBanner').classList.remove('show');
+      }
+    });
+
+    document.getElementById('installClose').addEventListener('click', () => {
+      document.getElementById('installBanner').classList.remove('show');
+    });
+  </script>
+</body>
+</html>
